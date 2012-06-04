@@ -12,8 +12,8 @@ return array(
 		'username'    => 'username',
 		'password'    => 'password',
 		'token'       => 'token',
-		'last_login'  => 'last_login', // (optional)
-		'logins'      => 'logins'      // (optional)
+		//'last_login'  => 'last_login', // (optional)
+		//'logins'      => 'logins'      // (optional)
 	),
 	'session'  => array(
 		'type'        => 'native' // native or database

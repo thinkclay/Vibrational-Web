@@ -265,17 +265,15 @@ class Model_Account extends Model
 				$errors = array();
                 // initial validation
                 $post = Validation::factory($post)
-                    ->rule('username', 'alpha_dash')
 					->rule('username', 'required')
-					->rule('password', 'required')
-					->rule('password_confirm', 'required')
-                    ->rule('password_confirm', 'matches', array(':validation', 'password', 'password_confirm'));
+					->rule('password', 'required');
                 $user = Mango::factory('Mango_User');
                 if ($post->check())
                 {
                     $post = $post->as_array();
-					$user->role = 'pending';
 					$user->created = time();  
+					$user->email = $post['username'];
+					$user->role = 'user';
                     try
                     {
 						// create the account
@@ -284,22 +282,12 @@ class Model_Account extends Model
                         $user->check();
 						
 						
-                        $user->create();
+                        $check = $user->create();
 						//$default_img = '/var/www/dev/resources/images/default_user.jpg';
 						//$image_path = '/var/data/users/'.$user->_id.'/'.$user->_id . '.jpg';
-						
-						$check = $this->_email_verification($user);
 						if ($check)
 						{
-							// create the users folder
-        					$check = $this->_create_user_folder($user->_id);
-							if ($check)
-							{
-								//copy($default_img, $image_path);
-								//$user->avatar = $image_path;
-								//$user->update();
-								return true;	
-							} else { return false; }
+							return true;
 								
 						} 
 						else // somthing failed internally

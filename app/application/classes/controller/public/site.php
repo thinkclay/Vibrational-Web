@@ -12,13 +12,23 @@ class Controller_Public_Site extends Controller_Public
 	
 	public function before()
 	{
+		parent::$jqmobile['theme'] = 'a';
+		
 		parent::before();
-				
-		$this->template->styles = array("http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" => "all");
+		
+		$this->template->head = '<script type="text/javascript">$.mobile.ajaxEnabled = false;</script>';		
+		
+		$this->template->styles = array(
+			"http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" => "all",
+			"styles/vibrational/global.less" => "all"
+		);
 		$this->template->scripts = array(
 			"http://code.jquery.com/jquery-1.6.4.min.js", 
 			"http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"
 		);
+		$this->template->header->data_role = 'navbar';
+		$this->template->header->content = Theme::view('vibrational/blocks/header');
+		$this->template->main->data_role = 'content';
 		
 		$this->model_account = new Model_Account;
 	}
@@ -54,13 +64,11 @@ class Controller_Public_Site extends Controller_Public
 	 * @return  void
 	 */
 	public function action_login()
-	{
-		//$this->auto_render = false;
-		
-		$this->template->main->content = Theme::view('vibrational/forms/login')->bind('post', $_POST);
-		
+	{	
 		if ( isset($_POST['username']) AND isset($_POST['password']) )
 		{
+			$this->auto_render = FALSE;
+			
 			$post = Validation::factory($_POST)
 				->rule('username', 'not_empty')
 				->rule('password', 'not_empty');
@@ -68,26 +76,36 @@ class Controller_Public_Site extends Controller_Public
 			if ($post->check())
 			{
 				// Attempt to login user
-				$remember = array_key_exists('remember', $this->request->post()) ? (bool) $this->request->post('remember') : FALSE;
-				$user = A1::instance()->login($this->request->post('username'), $this->request->post('password'), $remember);
+				$user = A1::instance()->login($this->request->post('username'), $this->request->post('password'));
 
-				if ($user AND $user->role != 'pending') 
+				if ($user) 
 				{
-					// Redirect to account/index if login passed
-					print_r('success');
+					$messages['success'][] = __('login.success.body');
 				}
 				else
 				{
-					$message = 'Invalid username or password';
-					print_r($message);
+					$messages['errors'][] = __('login.errors.invalid');
 				}
 			}
 			else
 			{
-				$message = 'Please enter a username and password';
-				print_r($message);
+				$messages['errors'][] = __('login.errors.empty');
 			}
+			
+			echo json_encode($messages);
 		}
+		else
+		{		
+			$this->template->main->content = Theme::view('vibrational/forms/login')
+				->bind('messages', $messages)
+				->bind('post', $_POST);
+		}		
+	}
+
+
+	public function action_registerform()
+	{
+		$this->template->main->content = Theme::view('vibrational/forms/register');
 	}
 
 	/**
@@ -98,9 +116,10 @@ class Controller_Public_Site extends Controller_Public
 	 */
 	public function action_register()
 	{
+		$user = Mango::factory('Mango_User');
 		$this->auto_render = false;
 		$role = Request::$current->param('id');
-		$fb = Kohana_Facebook::instance();
+		//$fb = Kohana_Facebook::instance();
 		switch ($role) 
 		{
 			// facebook registration and login use the same logic  
@@ -157,78 +176,6 @@ class Controller_Public_Site extends Controller_Public
 				
 				break;
 				
-			case 'agent_prospect':
-				if ($_POST)
-				{
-					$errors = array();
-					$post = Validation::factory($_POST)
-						->rule('email', 'required')
-						->rule('email', 'email_domain')
-						->rule('email', 'email')
-						->rule('email', 'not_empty')
-						->rule('last_name', 'required')
-						->rule('last_name', 'alpha_dash')
-						->rule('last_name', 'not_empty');
-						
-					if ($post->check())
-					{
-						$the_email = strtolower($_POST['email']);
-						
-						// If david, lets delete and start new
-						if ($the_email === 'david@qwizzle.co')
-						{
-							$tmp = Mango::factory('mango_user', array('email' => $the_email))->load();
-							
-							if ($tmp->loaded())
-							{
-								$tmp->delete();
-							}
-						}
-						
-						if ($this->model_account->create($_POST, 'agent_prospect'))
-						{
-							$user = Mango::factory('mango_user', array('email' => $the_email))->load();
-							$response['email'] = $the_email;
-							$response['success'] = 'true';
-							
-							if (A1::instance()->complete_login($user))
-							{
-								$response['message'] = 
-									'We have created a temporary account for you with yourd NRDS email and NRDS number '.
-									'as your username and password. <br /><br />You will be be able to log in with these credentials '.
-									'in the future to manage your account, find more information about Qwizzle, and '.
-									'contact our team using Qwizzle communication tools. <br /><br />'.
-									'<a href="/agents/overview/compensation">Continue to the desktop and overview</a>';
-							}
-							else 
-							{
-								$response['message'] = 
-									'An email has been sent to '.$the_email.
-									'Please follow the link in the email to validate account creation.';
-							}
-            				
-							
-							echo json_encode($response);
-						}
-						else
-						{
-							$errors['success'] = 'false';
-							$errors['nrds'] = 'It seems that we could not validate your NRDS number with the information you have provided. Please check and make sure that the email and last name you entered is the same as the one you registered your NRDS number with.';
-							
-							echo json_encode($errors);
-						}
-					}
-					else
-					{
-						// Validation failed, collect the errors
-						$errors = $post->errors('agent_prospect');
-						$errors['success'] = 'false';
-						echo json_encode($errors);
-					}
-				}
-
-				break;
-
 			default:
                 if ($_POST)
                 {
@@ -244,21 +191,39 @@ class Controller_Public_Site extends Controller_Public
                     }
                     else if ($check == true)
                     {
-                        echo json_encode(array('success' => 1, 'message'=>'An email has been sent to '.$_POST['email'].'<br /> Follow instructions to complete registration.'));
+                    	$user = A1::instance()->login($_POST['username'], $_POST['password'])->as_array();
+						Request::$current->redirect('site/profile');
                     }
-				
 				} 
 				else 
 				{
-					echo 'here1';
-								exit;
 					Request::$current->redirect('account');
 				}
-				
 				break;
 		}
 	}
 	
+	
+	
+	public function action_profile()
+	{
+		$user = A1::instance()->get_user();
+		if ($user)
+		{
+			if (isset($user->color))
+			{
+				$this->template->main->content = Theme::view('vibrational/color');
+			}
+			else
+			{
+				$this->template->main->content = Theme::view('vibrational/forms/profile');
+			}
+		}
+		else
+		{
+			$this->request->redirect('/site/login');
+		}
+	}
 	
 	/**
 	 * Used for basic user registration and facebook registration

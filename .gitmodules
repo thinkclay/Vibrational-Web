@@ -1,0 +1,6 @@
+[submodule "app/modules/annex"]
+	path = app/modules/annex
+	url = git://github.com/thinkclay/annex.git
+[submodule "app/modules/mango"]
+	path = app/modules/mango
+	url = https://github.com/Wouterrr/MangoDB.git

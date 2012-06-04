@@ -53,7 +53,19 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
 /**
  * Set the default language
  */
-I18n::lang('en-us');
+$host = explode('.', $_SERVER['HTTP_HOST']);
+$subdomains = array_slice($host, 0, count($host) - 2 );
+
+if ($subdomains[0] === 'app')
+{
+	I18n::lang('en');	
+}
+else
+{
+	I18n::lang($subdomains[0]);
+}
+
+
 
 /**
  * Set Kohana::$environment if a 'KOHANA_ENV' environment variable has been supplied.
@@ -80,7 +92,8 @@ if (isset($_SERVER['KOHANA_ENV']))
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 Kohana::init(array(
-	'base_url'   => '/vibrational/',
+	'base_url'		=> '/',
+	'index_file'	=> FALSE
 ));
 
 /**
@@ -106,6 +119,7 @@ Kohana::modules(array(
 	// 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
 	// 'unittest'   => MODPATH.'unittest',   // Unit testing
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
+	'mango'			=> MODPATH.'mango', //mango
 ));
 
 /**

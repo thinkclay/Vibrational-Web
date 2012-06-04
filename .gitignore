@@ -1,0 +1,5 @@
+app/application/logs
+app/application/logs/*
+app/application/cache
+app/application/cache/*
+cache/
