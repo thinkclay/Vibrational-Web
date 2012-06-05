@@ -201,73 +201,16 @@ class Model_Account extends Model
                 } 
                 break;
 				
-			case 'agent_prospect':
-				$errors = array();
-                $u = Mango::factory('Mango_User');
-				$post = Validation::factory($post);
-				
-                if ( $post->check() )
-                {
-                    $post = $post->as_array();
-					$u->username = urldecode($post['email']);
-					$nrds_credentials = array('last_name' => $post['last_name'], 'email' => urldecode($post['email']));
-					$nrds_num = $this->nrds_lookup($nrds_credentials);
-					
-					if ( $nrds_num == false )
-					{
-						$this->errors = array('nrds' => 'We were unable to find your nrds number. Please check and make sure that the email you entered is the same as the one registered your NRDS number with.');
-						return false;
-					}
-					else 
-					{
-						$u->password = $nrds_num;
-						$u->role = 'agent_prospect';
-						$u->created = time();  
-						$u->nrds_number = $nrds_num;	
-						
-	                    try
-	                    {
-	                        $u->values($post);
-								
-							//if ( $this->_email_verification($u, 'agent_prospect') )
-							//{
-								$u->create();
-	        					$this->_create_user_folder($u->_id);
-								return true;
-							//} 							
-	                    }
-	                    catch ( Validation_Exception $e )
-	                    {
-	                    	$errors = $e->array->errors('account/user');
-							return false;
-	                    }
-	                }
-                }
-                else
-                {
-                	$post['created'] = time();
-					$post['role'] = 'pending';
-                	try
-                	{
-                		$u->check($post->as_array());	
-                	}
-					catch(Mango_Validation_Exception $e)
-					{
-						$errors = $e->array->errors('account/user');
-					}
-                    // Validation failed, collect the errors
-                    $errors = arr::merge($errors, $post->errors('account/user'));
-                }
-				return $errors;
-				break;
-				
             default: // normal account registration  
 				$errors = array();
+				
                 // initial validation
                 $post = Validation::factory($post)
 					->rule('username', 'required')
 					->rule('password', 'required');
+					
                 $user = Mango::factory('Mango_User');
+                
                 if ($post->check())
                 {
                     $post = $post->as_array();

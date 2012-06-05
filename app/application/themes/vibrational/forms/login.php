@@ -45,7 +45,6 @@ $(function() {
 });
 </script>
 
-
 <div id="content-target" data-role="content">
 	<form id="login" method="post" action="<?= Url::site('site/login'); ?>">
 		<p>

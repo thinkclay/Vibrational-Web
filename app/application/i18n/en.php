@@ -12,4 +12,7 @@ return array(
 	'login.errors.invalid'		=> 'You could not be logged in with those credentials',
 	'login.errors.empty'		=> 'Please enter a username and password',
 	'login.success.body'		=> 'Logged in successfully, please wait while we log you in',
+	
+	'register.errors.header'	=> 'There were errors registering',
+	'register.success.body'		=> 'You have registered successfully, please wait while we log you in',
 );

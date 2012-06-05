@@ -59,8 +59,6 @@ class Controller_Public_Site extends Controller_Public
 	/**
 	 * Function for user login and facebook login/registration
 	 * 
-	 * @todo    Make custom error messages for invalid login creds
-	 * 
 	 * @return  void
 	 */
 	public function action_login()
@@ -102,112 +100,52 @@ class Controller_Public_Site extends Controller_Public
 		}		
 	}
 
-
-	public function action_registerform()
-	{
-		$this->template->main->content = Theme::view('vibrational/forms/register');
-	}
-
 	/**
-	 * Used for basic user registration and facebook registration
-	 *
-	 * @return void
-	 * @author Winter King
+	 * Function for user register
+	 * 
+	 * @return  void
 	 */
 	public function action_register()
 	{
-		$user = Mango::factory('Mango_User');
-		$this->auto_render = false;
-		$role = Request::$current->param('id');
-		//$fb = Kohana_Facebook::instance();
-		switch ($role) 
+		if ( isset($_REQUEST['username']) AND isset($_REQUEST['password']) )
 		{
-			// facebook registration and login use the same logic  
-			case "facebook":
-				$fb_account = $fb->account();
-				$link = $fb->facebook()->getLoginUrl(static::$fb_params);
-				if ( ! $fb_account) // if they are not authorized redirect them to the fb_link to get an auth_code
+			$this->auto_render = FALSE;
+			
+			$user = Mango::factory('Mango_User');
+			$check = $this->model_account->create($_REQUEST, 'user');
+			
+			if (is_array($check))
+			{
+				foreach ( $check as $c )
 				{
-					Request::$current->redirect($link);
+					$messages['errors'][] = $c;
 				}
-				if ( isset($_GET['code'] ) AND ! isset($_GET['error']))
-				{
-					if ($fb_account) // ensure they are verified
-					{
-						// load user by email
-						$user = Mango::factory('mango_user')->load(
-							1,
-							null,
-							null,
-							array(),
-							array(
-								'email' => array(
-									'$regex' => $fb_account['email'],
-									'$options' => 'i'
-								)
-							)
-						);
-						
-						if ($user->loaded())
-						{
-							// auto log them in
-							$this->model_account->autolog($fb_account);
-						}
-						else // they are not in our DB yet so register and log them in automatically 
-						{
-							$check = $this->model_account->create(array(), 'facebook');
-							
-							if (is_array($check))
-							{
-								$errors = $check; 
-							}
-							else
-							{
-								Request::$current->redirect('account');
-							}
-						}
-						
-					}
-				}
-				else
-				{
-					Request::$current->redirect();
-				}
-				
-				break;
-				
-			default:
-                if ($_POST)
-                {
-                    $check = $this->model_account->create($_POST, 'user');
-                    if (is_array($check))
-                    {
-                        $check['success'] = 0; 
-                        echo json_encode($check);
-                    }
-                    else if ($check == false)
-                    {
-                        echo json_encode(array('success' => 0, 'message'=>'User creation failed'));
-                    }
-                    else if ($check == true)
-                    {
-                    	$user = A1::instance()->login($_POST['username'], $_POST['password'])->as_array();
-						Request::$current->redirect('site/profile');
-                    }
-				} 
-				else 
-				{
-					Request::$current->redirect('account');
-				}
-				break;
-		}
+			}
+			elseif ($check === FALSE)
+			{
+				$messages['errors'][] = __('register.error.body');
+			}
+			elseif ($check === TRUE)
+			{
+				$user = A1::instance()->login($_REQUEST['username'], $_REQUEST['password'])->as_array();
+				Request::$current->redirect('site/profile');
+			}
+			
+			echo json_encode($messages);
+		} 
+		else
+		{		
+			$this->template->main->content = Theme::view('vibrational/forms/register')
+				->bind('messages', $messages)
+				->bind('post', $_REQUEST);
+		}		
 	}
-	
 	
 	
 	public function action_profile()
 	{
 		$user = A1::instance()->get_user();
+		
 		if ($user)
 		{
 			if (isset($user->color))
