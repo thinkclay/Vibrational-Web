@@ -20,49 +20,66 @@ class Controller_Public_Api extends Controller_Public
 			//$latitude2 = "37.786078"; $longitude2 = "-122.405948";
 			$latitude = $_GET['latitude'];
 			$longitude = $_GET['longitude'];
+			$pin = '21';
+			
+			if ( parent::$user )
+			{
+				$pin = round(array_sum(array(
+					$user->question_1,
+					$user->question_2,
+					$user->question_3,
+					$user->question_4,
+					$user->question_5,
+					$user->question_6,
+					$user->question_7,
+					$user->question_8,
+					$user->question_9
+				)) / 9);
+			}
+			
+			
+			// Return the current user
+			$data[] = array(
+				"color" => $pin,
+	    		"latitude" => $latitude,
+	    		"longitude" => $longitude	
+			);
 			
 			$data[] = array(
 	    		"color" => "red",
 	    		"latitude" => $latitude,
 	    		"longitude" => $longitude
 	 		);
-	 		
-	 		// Jon
-	 		$data[] = array(
-	    		"color" => "blue",
-	    		"latitude" => "39.8138",
-	    		"longitude" => "-104.9769"
-	 		);
-	 		
-	 		// Clay
-	 		$data[] = array(
-	    		"color" => "blue",
-	    		"latitude" => "39.9938",
-	    		"longitude" => "-105.0868"
-	 		);
-	 		
-	 		// Walt
-	 		$data[] = array(
-	    		"color" => "green",
-	    		"latitude" => "39.5427",
-	    		"longitude" => "-104.9737"
-	 		);
- 		
-	 		/*
-			$user = A1::instance()->get_user();
-			if ($user)
-				echo "logged in";
-			else
-				echo "Not Logged In";
-				
-			$id = $user->_id;
-					echo "<br/>";
-					
-			echo $id;
-					echo "<br/>";
-			*/
 			
 			echo json_encode($data);
 		}
 	}
+	
+	// Use this from Qwizzle to set up the new search
+	private function _public_property ( $format )
+	{
+		if ( $format == 'geospatial' )
+		{
+			$criteria = array();
+			
+			$data = json_decode(json_encode($_GET, JSON_NUMERIC_CHECK));
+						
+			if ( isset($data->points) ) 
+				$criteria['location'] = array( '$within' => array('$polygon' => $data->points) );
+			
+			if ( isset($data->min_price) AND isset($data->max_price) )		
+				$criteria['price'] = array('$gte' => $data->min_price, '$lte' => $data->max_price);
+			
+			if ( isset($data->bedrooms) )
+				$criteria['total_beds'] = array('$gte' => $data->bedrooms);
+			
+			if ( isset($data->bathrooms) )
+				$criteria['total_baths'] = array('$gte' => $data->bathrooms);
+			
+			$property = Mango::factory('mango_property')->load(null, null, 0, array(), $criteria)->as_array(false);
+	        
+	        echo json_encode($property);
+		}
+	}
+	
 }

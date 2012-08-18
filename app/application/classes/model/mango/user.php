@@ -45,15 +45,6 @@ class Model_Mango_User extends Model_A1_User_Mango implements Acl_Role_Interface
 		'logins'    => array(
             'type'  => 'int',    
         ),
-        'external' => array(
-            'type' => 'array',
-        ),
-        'properties' => array(
-            'type' => 'set',
-        ),
-		'fav_properties' => array(
-			'type'  => 'array',
-		),
 		'contacts' => array(
 			'type' => 'mixed',
 		),
@@ -184,67 +175,59 @@ class Model_Mango_User extends Model_A1_User_Mango implements Acl_Role_Interface
                      array('phone')
             )
         ),
-        'license_number' => array(
-        	'type' 		 => 'string',
-        	'required'   => false,
-        ),
-        'years_licensed_realtor' => array(
+        'question_1' => array(
         	'type' 		 => 'string',
         	'min_length' => 1,
-        	'max_length' => 3,
-        	'rules'      => 
-                 array(
-                     array('numeric')
-            )
-        ),
-        'license_state' => array(
-        	'type' 		 => 'string',
-        	'min_length' => 2,
         	'max_length' => 2,
         ),
-        'current_broker' => array(
-        	'type' 		 => 'string',
-        	'rules'      => 
-                 array(
-                     array('alpha_dash')
-            )
-        ),
-        'current_broker_years' => array(
+        'question_2' => array(
         	'type' 		 => 'string',
         	'min_length' => 1,
-        	'max_length' => 3,
-        	'rules'      => 
-                 array(
-                     array('numeric')
-            )
+        	'max_length' => 2,
         ),
-		'current_broker_phone' => array(
-			'type' => 'string',
-			'max_length' => 15,
-			'rules'      => 
-                 array(
-                     array('phone')
-            )
-		),
+        'question_3' => array(
+        	'type' 		 => 'string',
+        	'min_length' => 1,
+        	'max_length' => 2,
+        ),
+        'question_4' => array(
+        	'type' 		 => 'string',
+        	'min_length' => 1,
+        	'max_length' => 2,
+        ),
+        'question_5' => array(
+        	'type' 		 => 'string',
+        	'min_length' => 1,
+        	'max_length' => 2,
+        ),
+        'question_6' => array(
+        	'type' 		 => 'string',
+        	'min_length' => 1,
+        	'max_length' => 2,
+        ),
+        'question_7' => array(
+        	'type' 		 => 'string',
+        	'min_length' => 1,
+        	'max_length' => 2,
+        ),
+        'question_8' => array(
+        	'type' 		 => 'string',
+        	'min_length' => 1,
+        	'max_length' => 2,
+        ),
+        'question_9' => array(
+        	'type' 		 => 'string',
+        	'min_length' => 1,
+        	'max_length' => 2,
+        ),
+        'question_10' => array(
+        	'type' 		 => 'string',
+        	'min_length' => 1,
+        	'max_length' => 2,
+        ),
 		'education' => array(
 			'type' => 'string',
 		),
-		'realtor_board' => array(
-        	'type' 		 => 'string',
-        	
-        ),
-        'ethics_training_year' => array(
-        	'type' 		 => 'string',
-        	'min_length' => 2,
-        	'max_length' => 4,
-        	'rules'      => 
-                 array(
-                     array('numeric')
-            )
-        ),
-        'ethics_violation_explanation' => array(
-        	'type' 		 => 'string',
-        ),
         /* end editable fields */
         'birthday' => array(
             'type' => 'string',

@@ -15,4 +15,11 @@ return array(
 	
 	'register.errors.header'	=> 'There were errors registering',
 	'register.success.body'		=> 'You have registered successfully, please wait while we log you in',
+	
+	'question.errors.header'	=> 'You done goofed',
+	'question.errors.empty'		=> 'Please drag the slider to select a choice',
+	'question.success.body'		=> 'Your answer was saved',
+	
+	'errors.header'				=> 'Bummer, something went wrong.',
+	'errors.body'				=> 'Please send a message and let us know, dev@arr.ae',
 );

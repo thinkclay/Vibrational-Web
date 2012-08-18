@@ -9,13 +9,13 @@
  */
 class Controller_Public_Site extends Controller_Public
 {
-	
 	public function before()
 	{
 		parent::$jqmobile['theme'] = 'a';
 		
 		parent::before();
 		
+		$this->template->title = "Vibrational";
 		$this->template->head = '<script type="text/javascript">$.mobile.ajaxEnabled = false;</script>';		
 		
 		$this->template->styles = array(
@@ -26,11 +26,17 @@ class Controller_Public_Site extends Controller_Public
 			"http://code.jquery.com/jquery-1.6.4.min.js", 
 			"http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"
 		);
-		$this->template->header->data_role = 'navbar';
-		$this->template->header->content = Theme::view('vibrational/blocks/header');
+		
+		if ( ! parent::$user )
+		{
+			$this->template->header->data_role = 'navbar';
+			$this->template->header->content = Theme::view('vibrational/blocks/header');
+		}
+		
 		$this->template->main->data_role = 'content';
 		
 		$this->model_account = new Model_Account;
+		$this->model_questions = new Model_Questions;
 	}
 	
 	/**
@@ -40,9 +46,14 @@ class Controller_Public_Site extends Controller_Public
 	 */
 	public function action_index()
 	{
-		// $this->template->styles = array("styles/default/test.less" => "screen");
-		
-		$this->template->main->content = Theme::view('vibrational/index');
+		if (parent::$user)
+		{
+			$this->request->redirect('/site/profile');
+		}
+		else
+		{	
+			$this->template->main->content = Theme::view('vibrational/index');
+		}
 	}
 
 	/**
@@ -107,12 +118,11 @@ class Controller_Public_Site extends Controller_Public
 	 */
 	public function action_register()
 	{
-		if ( isset($_REQUEST['username']) AND isset($_REQUEST['password']) )
+		if ( isset($_POST['username']) AND isset($_POST['password']) )
 		{
 			$this->auto_render = FALSE;
 			
-			$user = Mango::factory('Mango_User');
-			$check = $this->model_account->create($_REQUEST, 'user');
+			$check = $this->model_account->create($_POST, 'user');
 			
 			if (is_array($check))
 			{
@@ -127,7 +137,7 @@ class Controller_Public_Site extends Controller_Public
 			}
 			elseif ($check === TRUE)
 			{
-				$user = A1::instance()->login($_REQUEST['username'], $_REQUEST['password'])->as_array();
+				$user = A1::instance()->login($_POST['username'], $_POST['password'])->as_array();
 				Request::$current->redirect('site/profile');
 			}
 			
@@ -137,24 +147,72 @@ class Controller_Public_Site extends Controller_Public
 		{		
 			$this->template->main->content = Theme::view('vibrational/forms/register')
 				->bind('messages', $messages)
-				->bind('post', $_REQUEST);
+				->bind('post', $_POST);
 		}		
 	}
 	
 	
 	public function action_profile()
-	{
-		$user = A1::instance()->get_user();
-		
-		if ($user)
+	{	
+		if (parent::$user)
 		{
-			if (isset($user->color))
+			$questions = $this->model_questions->get_all();
+						
+			$this->template->main->content = Theme::view('vibrational/forms/profile')
+				->bind('questions', $questions)
+				->bind('user', parent::$user);
+		}
+		else
+		{
+			$this->request->redirect('/site/login');
+		}
+	}
+	
+	public function action_question()
+	{
+		$this->template->main->data_role = '';
+		$question = 'question_'.$this->request->param('id');
+				
+		if (parent::$user)
+		{		
+			if ( isset($_POST[$question]) )
 			{
-				$this->template->main->content = Theme::view('vibrational/color');
+				$this->auto_render = FALSE;
+				
+				$post = Validation::factory($_POST)
+					->rule($question, 'not_empty');
+					
+				if ($post->check())
+				{
+					$messages['success'][] = __('question.success.body');
+					
+					static::$user->values($_POST);
+					
+		            try
+		            {
+		                static::$user->check();
+		                static::$user->update();	
+		            }
+		            catch (Mango_Validation_Exception $e)
+		            {
+		                $messages['errors'] = $e;
+		            }
+				}
+				else
+				{
+					$messages['errors'][] = __('question.errors.empty');
+				}
+				
+				echo json_encode($messages);
 			}
 			else
 			{
-				$this->template->main->content = Theme::view('vibrational/forms/profile');
+				$id = (int) $this->request->param('id') - 1;
+				$questions = $this->model_questions->get_all();
+				
+				$this->template->main->content = Theme::view('vibrational/forms/question')
+					->bind('id', $id)
+					->bind('questions', $questions);
 			}
 		}
 		else

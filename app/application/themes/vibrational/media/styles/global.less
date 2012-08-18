@@ -1,8 +1,10 @@
 hr { background: #444; border: none; height: 1px; }
 
+.clear { clear: both; }
 .hidden { display: none; }
 
-.ui-error {
+.ui-error 
+{
 	border: 1px solid #f84343;
 	color: #fff;
 	text-shadow: 0 1px 0 #8e2626;
@@ -17,8 +19,8 @@ hr { background: #444; border: none; height: 1px; }
 	right: 0;
 	top: 0;
 	z-index: 999;
-}
-	.ui-error h3 { 
+	
+	h3 { 
 		border-bottom: 1px dotted #8e2626; 
 		color: #8e2626;
 		font-size: 1.2em; 
@@ -27,4 +29,83 @@ hr { background: #444; border: none; height: 1px; }
 		padding: 0 0 .35em; 
 		text-shadow: 0 1px 0 #d55;
 	}
-	.ui-error p { font-size: 1em; margin: .25em 0; }
+	p { font-size: 1em; margin: .25em 0; }
+}
+	
+	
+/* Vibrational Colors */
+@level-20 = #9670f6;
+@level-19 = #7d70f6;
+@level-18 = #7079f6;
+@level-17 = #708cf6;
+@level-16 = #70a9f6;
+
+@level-15 = #70bcf6;
+@level-14 = #70def6;
+@level-13 = #70f6f4;
+@level-12 = #70f6db;
+@level-11 = #70f6b8;
+
+@level-10 = #70f69f;
+@level-9 = #70f680;
+@level-8 = #80f670;
+@level-7 = #a6f670;
+@level-6 = #c8f670;
+
+@level-5 = #eef670;
+@level-4 = #f6d870;
+@level-3 = #f6af70;
+@level-2 = #f68f70;
+@level-1 = #f67070;
+
+h1.level-20, span.level-20 { color: @level-20; }
+h1.level-19, span.level-19 { color: @level-19; }
+h1.level-18, span.level-18 { color: @level-18; }
+h1.level-17, span.level-17 { color: @level-17; }
+h1.level-16, span.level-16 { color: @level-16; }
+h1.level-15, span.level-15 { color: @level-15; }
+h1.level-14, span.level-14 { color: @level-14; }
+h1.level-13, span.level-13 { color: @level-13; }
+h1.level-12, span.level-12 { color: @level-12; }
+h1.level-11, span.level-11 { color: @level-11; }
+h1.level-10, span.level-10 { color: @level-10; }
+h1.level-9, span.level-9 { color: @level-9; }
+h1.level-8, span.level-8 { color: @level-8; }
+h1.level-7, span.level-7 { color: @level-7; }
+h1.level-6, span.level-6 { color: @level-6; }
+h1.level-5, span.level-5 { color: @level-5; }
+h1.level-4, span.level-4 { color: @level-4; }
+h1.level-3, span.level-3 { color: @level-3; }
+h1.level-2, span.level-2 { color: @level-2; }
+h1.level-1, span.level-1 { color: @level-1; }
+
+li.level-20 a, #avatar.level-20 { background-color: @level-20; }
+li.level-19 a, #avatar.level-19 { background-color: @level-19; }
+li.level-18 a, #avatar.level-18 { background-color: @level-18; }
+li.level-17 a, #avatar.level-17 { background-color: @level-17; }
+li.level-16 a, #avatar.level-16 { background-color: @level-16; }
+li.level-15 a, #avatar.level-15 { background-color: @level-15; }
+li.level-14 a, #avatar.level-14 { background-color: @level-14; }
+li.level-13 a, #avatar.level-13 { background-color: @level-13; }
+li.level-12 a, #avatar.level-12 { background-color: @level-12; }
+li.level-11 a, #avatar.level-11 { background-color: @level-11; }
+li.level-10 a, #avatar.level-10 { background-color: @level-10; }
+li.level-9 a, #avatar.level-9 { background-color: @level-9; }
+li.level-8 a, #avatar.level-8 { background-color: @level-8; }
+li.level-7 a, #avatar.level-7 { background-color: @level-7; }
+li.level-6 a, #avatar.level-6 { background-color: @level-6; }
+li.level-5 a, #avatar.level-5 { background-color: @level-5; }
+li.level-4 a, #avatar.level-4 { background-color: @level-4; }
+li.level-3 a, #avatar.level-3 { background-color: @level-3; }
+li.level-2 a, #avatar.level-2 { background-color: @level-2; }
+li.level-1 a, #avatar.level-1 { background-color: @level-1; }
+
+.questions li a { background-image: url('/public/images/table-li.png'); background-position: 0 0; background-repeat: repeat-x; }
+.questions li a:hover { background-position: 0 -20px; }
+
+
+#avatar { 
+	background-image: url('/public/images/bg-profile.png'); 
+	background-position: 0 0;
+	height: 100px; width: 70px; 
+}

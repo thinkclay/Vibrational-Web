@@ -48,7 +48,7 @@ $(function() {
 <div id="content-target" data-role="content">
 	<form id="login" method="post" action="<?= Url::site('site/login'); ?>">
 		<p>
-			<label for="username" class="ui-input-text">Username:</label>
+			<label for="username" class="ui-input-text">Email:</label>
 			<input type="text" name="username" id="username" value="<?= @$_POST['username']; ?>" />
 		</p>
 		<p>
@@ -58,13 +58,15 @@ $(function() {
 		
 		<fieldset class="ui-grid-a">
 			<div class="ui-block-a"><button type="submit" data-theme="c">Login</button></div>
-			<div class="ui-block-b"><button type="submit" data-theme="e">Forgot</button></div>
+<!-- 			<div class="ui-block-b"><button type="submit" data-theme="e">Forgot</button></div> -->
 		</fieldset>
 	</form>
 	
 	<hr />
-	
+	<!--
+
 	<p>
 		<a href="<?= Url::site('annex/login'); ?>" data-role="button" data-theme="b">Login with Facebook</a>
 	</p>
+-->
 </div>
