@@ -1,4 +1,4 @@
-<h1><?= __('content.landing.header'); ?></h1>
+<h2><?= __('content.landing.header'); ?></h2>
 <p><?= __('content.landing.text'); ?></p>
 
 <div class="ui-grid-a">

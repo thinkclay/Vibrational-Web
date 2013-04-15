@@ -19,28 +19,32 @@ class Model_Questions extends Model
 			),
 			array(
 				'title'		=> 'Success',
-				'content'	=> 'I understand (believe) that success is a choice.'
+				'content'	=> 'I understand that success is a choice.'
 			),
 			array(
 				'title'		=> 'Habits',
-				'content'	=> 'Like any other habit in life, I understand (believe) that success is a habit as well.'
+				'content'	=> 'I understand that success is a habit, just like any other habit.'
 			),
 			array(
 				'title'		=> 'Choices',
-				'content'	=> 'I understand that right here, right now in this very moment, that I have just two choices: (1) Make a choice for what I want or (2) Make a choice other than what I want.'
+				'content'	=> 'I understand that I have two choices in all I do: (1) Make a choice for what I want or (2) Make a choice for something other than what I want.'
 			),
 			array(
 				'title'		=> 'Process',
-				'content'	=> 'I have a system that I follow that keeps on me on track to achieving my most heartfelt dreams, goals, and desires.'
+				'content'	=> 'I have a system that I follow that keeps me on track to achieving my most heartfelt dreams, goals, and desires.'
 			),
 			array(
 				'title'		=> 'Sensitivity',
-				'content' 	=> 'I understand that the feelings that I sense around others (i.e., the "vibes") are like "signatures" of their vibrations.'
+				'content' 	=> 'I understand that the feelings that I sense around others (i.e., their "vibes") are like "signatures" of their personal vibrations.'
 			),
 			array(
 				'title'		=> 'Actions',
-				'content'	=> 'I understand the saying that insanity is doing the same thing over and over again, yet expecting a different outcome.'
-			)
+				'content'	=> 'I understand the saying, "If I want a different outcome, I have to choose a different action."'
+			),
+			array(
+				'title'		=> 'Feelings',
+				'content'	=> 'I understand that I have a choice in how I feel.'
+			),
 		);
 		
 		return $questions;

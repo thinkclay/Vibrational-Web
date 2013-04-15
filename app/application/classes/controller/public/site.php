@@ -400,4 +400,9 @@ class Controller_Public_Site extends Controller_Public
 			Request::$current->redirect();
 		}
 	}
+	
+	public function action_congrats()
+	{
+		$this->template->main->content = Theme::view('vibrational/static/congrats');
+	}
 }

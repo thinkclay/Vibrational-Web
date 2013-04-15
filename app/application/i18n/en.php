@@ -2,7 +2,10 @@
 return array(
 	'content.landing.header'	=> 'Vibrational Profile',
 	
-	'content.landing.text'		=> 'Using the Emotional-Vibrational Color Scale &trade; we evaluate the way you think and feel on generic topics and life subject to then assign you a color. These colors show you the amount and types of colors you give off (you\'ve heard of Aura\'s right?) and then help you follow, shift, attract, and interact with your own internal vibrations as well as the people around you.',
+	'content.landing.text'		=> 'This simple app uses the Emotional-Vibrational Color Scale® (EVCS®) to identify and measure your thoughts and feelings in 10 life areas. Then, those answers are used to compute and assign a color on the EVCS that corresponds to your present emotional-vibrational profile, so you can start today to use the App to track, interact with, and shift your daily choices and transform your life, consciously and systematically choice by choice! Let\'s get started!',	
+/*	
+	'Using the Emotional-Vibrational Color Scale &trade; we evaluate the way you think and feel on generic topics and life subject to then assign you a color. These colors show you the amount and types of colors you give off (you\'ve heard of Aura\'s right?) and then help you follow, shift, attract, and interact with your own internal vibrations as well as the people around you.',
+*/
 	
 	'button.login'		=> 'Login',
 	'button.register'	=> 'Register',

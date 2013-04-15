@@ -56,13 +56,9 @@ $(function() {
 			<input type="password" name="password" id="password" value="<?= @$_POST['password']; ?>" />
 		</p>
 		
-		<fieldset class="ui-grid-a">
-			<div class="ui-block-a"><button type="submit" data-theme="c">Login</button></div>
-<!-- 			<div class="ui-block-b"><button type="submit" data-theme="e">Forgot</button></div> -->
-		</fieldset>
+		<input type="submit" value="Login" />
 	</form>
 	
-	<hr />
 	<!--
 
 	<p>

@@ -9,7 +9,7 @@ body {
 }
 h3, p { margin: 10px 2%; }
 #color-scale {
-	background: #000;
+	background: #000 url('/public/images/bg-color-scale.png') no-repeat 98% 2%; 
 	height: 220px;
 	overflow: hidden;
 	padding: 20px 2%;
@@ -102,7 +102,7 @@ $(function() {
 						$text.html('<span class="level-10" rel="10">Hmm, not sure</span>');
 						
 					else if (current_position > 100 && current_position <= 110)
-						$text.html('<span class="level-9" rel="9">Meh</span>');
+						$text.html('<span class="level-9" rel="9">Hmm, not sure</span>');
 					
 					else if (current_position > 110 && current_position <= 120)
 						$text.html('<span class="level-8" rel="8">Leaning towards no</span>');
